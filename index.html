@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Git</title>
+    <meta name="description" content="Git">
+    <meta name="author" content="Michał Kawecki">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/moon.css" id="theme">
+
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+        <section>
+            <img src="https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png" alt="git logo"
+                 style="height: 180px; margin: 0 auto 4rem auto; background: transparent;" class="demo-logo">
+            <h2>Git</h2>
+            <p>
+                <small>Czyli jak nie narobić gnoju w repozytorium</a></small>
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                Rozproszony system kontroli wersji
+            </h3>
+
+            <ul>
+                <li>śledzenie wszystkich zmian dokonywanych w plikach</li>
+                <li>możliwość przywrócenia poprzedniej wersji pliku</li>
+                <li>współdzielenie plików z innymi</li>
+                <li>łączenie zmian dokonywanych w plikach przez wiele osób w różnym czasie</li>
+                <li>obsługa dużych projektów</li>
+            </ul>
+        </section>
+
+        <section>
+            <section>
+                <h3>Podstawy</h3>
+                <h4>
+                    Git przechowuje dane jako zestaw migawek (snapshot).
+                </h4>
+                <img src="https://git-scm.com/book/en/v2/images/snapshots.png"
+                     style="height: 200px;">
+                <p>
+                    Za każdym razem gdy wprowadzamy zmianę do projektu, Git tworzy obraz przedstawiający to jak
+                    wyglądają pliki w danym momencie.
+                </p>
+            </section>
+            <section>
+                <h4>Niemal każda operacja jest lokalna</h4>
+                <p>Większość operacji jakie przeprowadzamy wymaga jedynie dostępu do lokalnych plików i zasobów.</p>
+            </section>
+            <section>
+                <h4>Git wyłącznie dodaje nowe dane</h4>
+                <p>Wykonując pracę niemal zawsze jedynie dodajemy dane do bazy danych Git.</p>
+                <p>Pozwala to na eksperymentowanie bez ryzyka - zawsze możemy wrócić do poprzedniej wersji projektu.</p>
+            </section>
+            <section>
+                <h4>Stany</h4>
+                <img src="https://git-scm.com/book/en/v2/images/areas.png" style="height: 250px;">
+                <p>
+                <ul>
+                    <li>zmodyfikowany</li>
+                    <li>śledzony</li>
+                    <li>zatwierdzony</li>
+                </ul>
+                </p>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>Instalacja</h3>
+                <p>Standardowy sposób instalacji w systemie Linux opartym na Debianie (np. Ubuntu).</p>
+                <pre><code>$ sudo apt-get install git</code></pre>
+            </section>
+            <section>
+                <h4>Konfiguracja</h4>
+                <p>Konfiguracja przetrzymywana jest w trzech miejscach:
+                <ul>
+                    <li>
+                        <pre>/etc/gitconfig</pre>
+                    </li>
+                    <li>
+                        <pre>~/.gitconfig</pre>
+                    </li>
+                    <li>
+                        <pre>.git/config (w repozytorium)</pre>
+                    </li>
+                </ul>
+                </p>
+            </section>
+            <section>
+                <h4>Ustawienia tożsamości</h4>
+                <pre><code data-trim>
+                $ git config --global user.name "John Doe"
+                $ git config --global user.email johndoe@example.com
+                </code></pre>
+            </section>
+            <section>
+                <h4>Aliasy</h4>
+                <p>Nie ma potrzeby pamiętania długich, skomplikowanych komend. Można skorzystać z aliasów:</p>
+                <pre><code data-trim>
+                $ git config --global alias.co checkout
+                $ git config --global alias.br branch
+                $ git config --global alias.ci commit
+                $ git config --global alias.st status
+                </code></pre>
+            </section>
+            <section>
+                <h4>Podgląd ustawień</h4>
+                <pre><code data-trim>$ git config --list</code></pre>
+                <pre><code data-trim>
+                    alias.co=checkout
+                    alias.br=branch
+                    alias.ci=commit
+                    alias.st=status
+                    alias.unstage=reset HEAD --
+                    alias.last=log -1 HEAD
+                    user.email=m.kawecki@sages.com.pl
+                    user.name=Michał Kawecki</code>
+                </pre>
+            </section>
+            <section>
+                <h4>Uwierzytelnianie</h4>
+                <p>Warto wymienić się kluczem ssh z serwisem hostingowym, na którym znajdują się repozytoria.</p>
+                <img src="assets/ssh.png" style="height: 300px;">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>git init</h3>
+                <p>Tworzymy nowe repozytorium gita</p>
+            </section>
+            <section>
+                <h4>git clone</h4>
+                <p>Klonujemy istniejące repozytorium</p>
+            </section>
+            <section>
+                <h4>git add</h4>
+                <p>Dodajemy pliki do "poczekalni"</p>
+            </section>
+            <section>
+                <h4>git commit</h4>
+                <p>Zatwierdzamy zmiany (tworzymy commita)</p>
+                <pre><code data-trim>$ git commit -m "&lt;treść commita&gt;"</code></pre>
+            </section>
+            <section>
+                <h4>git status</h4>
+                <p>Sprawdzamy status repozytorium</p>
+                <img src="assets/git-status.png">
+            </section>
+            <section>
+                <h4>git log</h4>
+                <p>Sprawdzamy historię zmian</p>
+                <pre><code data-trim>
+                ~/work/sages master > git log
+
+                commit 3f2330dcbe4219835ab81b35f93a86710205b520 (HEAD -&gt; master)
+                Author: Michał Kawecki &lt;m.kawecki@sages.com.pl&gt;
+                Date:   Wed Jun 22 15:29:06 2022 +0200
+
+                    Initial commit
+                </code></pre>
+            </section>
+            <section>
+                <h4>git diff</h4>
+                <p>Porównujemy zmiany</p>
+                <pre><code data-trim>
+                ~/work/sages master !1 > git diff
+
+                diff --git a/hasla.txt b/hasla.txt
+
+                index 77a7723..d00821a 100644
+                --- a/hasla.txt
+                +++ b/hasla.txt
+                @@ -1 +1 @@
+                -mkaminski;m4ttek123
+                +mstone;m4ttek123
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>git revert</h3>
+                <p>Wycofujemy zmiany</p>
+                <pre><code data-trim>
+                ~/work/sages master > git revert 47f8cfc6f7592320365bcc55d0a5b50f2a844773
+
+                [master 20a9cda] Revert "Random commit"
+                 1 file changed, 1 deletion(-)
+                 delete mode 100644 hasla.txt
+                </code></pre>
+            </section>
+            <section>
+                <h4>git reset</h4>
+                <p>Resetujemy zmiany</p>
+                <pre><code data-trim>
+                ~/work/sages master > git reset 47f8cfc6f7592320365bcc55d0a5b50f2a844773
+
+                Unstaged changes after reset:
+                D	hasla.txt
+                </code></pre>
+            </section>
+            <section>
+                <h4>git restore</h4>
+                <p>Przywracanie zmian</p>
+                <pre><code data-trim>
+                 ~/work/sages master !1 > git status
+                On branch master
+                Changes not staged for commit:
+                  (use "git add <file>..." to update what will be committed)
+                  (use "git restore <file>..." to discard changes in working directory)
+                    modified:   lista_pracownikow.txt
+
+                no changes added to commit (use "git add" and/or "git commit -a")
+
+                ~/work/sages master !1 > git restore lista_pracownikow.txt
+
+                ~/work/sages master > git status
+                On branch master
+                nothing to commit, working tree clean
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>git commit --amend</h3>
+                <p>Modyfikujemy commita</p>
+                <pre><code data-trim>
+                $ git commit --amend
+                </code></pre>
+            </section>
+            <section>
+                <h4>git rebase</h4>
+                <p>Przemieszczamy commity</p>
+                <pre><code data-trim>
+                $ git rebase &lt;nazwa brancha&gt;
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>git branch</h3>
+                <p>Zarządzamy branchami</p>
+                <pre><code data-trim>
+                $ git branch
+                </code></pre>
+            </section>
+            <section>
+                <h4>git checkout</h4>
+                <p>Przełączamy się między branchami</p>
+                <pre><code data-trim>
+                $ git checkout &lt;nazwa brancha&gt;
+                </code></pre>
+            </section>
+            <section>
+                <h4>git merge</h4>
+                <p>Scalamy branche</p>
+                <pre><code data-trim>
+                $ git merge &lt;nazwa brancha&gt;
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>git remote</h3>
+                <p>Zarządzamy repozytoriami zdalnymi</p>
+                <pre><code data-trim>
+                $ git remote
+                </code></pre>
+            </section>
+            <section>
+                <h4>git pull</h4>
+                <p>Pobieramy zmiany z repozytorium zdalnego</p>
+                <pre><code data-trim>
+                $ git pull
+                </code></pre>
+            </section>
+            <section>
+                <h4>git push</h4>
+                <p>Przesyłamy zmiany do repozytorium zdalnego</p>
+                <pre><code data-trim>
+                $ git push
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h3>Tagi</h3>
+            <p>Specjalne oznaczenie poszczególnych punktów w historii repozytorium, które są szczególnie ważne.</p>
+            <p>Zazwyczaj wykorzystywane do oznaczania wydawanych wersji. Rozróżniamy dwa typy tagów:</p>
+            <ul>
+                <li>lightweight</li>
+                <li>annotated</li>
+            </ul>
+            <pre><code data-trim>
+            $ git tag -a v1.4 -m "my version 1.4"
+            </code></pre>
+        </section>
+
+        <section>
+            <h3>HEAD</h3>
+            <p>Wskazanie na miejsce w repozytorium (branch/commit) na którym się "znajdujemy"</p>
+            <pre><code data-trim>
+            ~/work/sages master *1 > cat .git/HEAD
+            ref: refs/heads/master
+            </code></pre>
+        </section>
+
+        <section>
+            <h3>Merge vs. rebase</h3>
+            <img src="assets/mergevsrebase.png">
+        </section>
+
+        <section>
+            <section>
+                <h3>Commitowanie</h3>
+                <img src="assets/gitcommits.png">
+            </section>
+            <section>
+                <p>Rozsądny podział.</p>
+                <p>Commitujemy często.</p>
+                <p>Nie commitujemy "w połowie".</p>
+            </section>
+            <section>
+                <p>Używamy gałęzi.</p>
+                <p>Nazwy commitów są ważne.</p>
+            </section>
+        </section>
+
+        <section>
+            <h3>Rozwiązywanie konfliktów</h3>
+            <img src="https://www.jetbrains.com/idea/guide/static/e3a69c2cb436b132149bee0b521b89b0/1ac29/merge-revisions-dialog.png">
+        </section>
+
+    </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/zoom/zoom.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/search/search.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+        plugins: [RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight]
+    });
+</script>
+
+</body>
+</html>
